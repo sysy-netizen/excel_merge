@@ -1,0 +1,20 @@
+# Node / Next.js
+node_modules/
+.next/
+next-env.d.ts
+out/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Vercel
+.vercel
+
+# 실제 고객 주문/전화번호가 들어있을 수 있는 테스트용 엑셀 파일들
+# -> 절대 저장소에 올리면 안 됩니다.
+테스트파일-삭제예정/
+*.xlsx
+*.xls
