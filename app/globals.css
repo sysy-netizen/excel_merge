@@ -1,4 +1,6 @@
-/* excel_merge/app.py 의 인라인 CSS를 순수 HTML/CSS 구조에 맞게 이식한 스타일시트 */
+/* excel_merge/app.py 의 인라인 CSS를 순수 HTML/CSS 구조에 맞게 이식한 스타일시트.
+   codivostudio-web(Astro)의 /tools/excel-converter/ 페이지가 이 앱을 iframe으로
+   감싸므로, 공통 헤더/페이지 제목 스타일은 여기 두지 않습니다. */
 
 * {
   box-sizing: border-box;
@@ -19,85 +21,7 @@ body {
   padding: 0 1.5rem 3rem;
 }
 
-/* ── 공통 헤더 ─────────────────────────────────────────────── */
-.cs-header {
-  position: relative;
-  z-index: 1000;
-  border-bottom: 1px solid #e5e5e5;
-  background: #ffffff;
-  margin: 0 0 1.5rem 0;
-}
-
-.cs-header__top {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0.35rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.cs-header__brand {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: #111827;
-  text-decoration: none;
-}
-.cs-header__brand:hover {
-  color: #2563eb;
-}
-
-.cs-header__badge {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: #666666;
-  text-decoration: none;
-}
-.cs-header__badge:hover {
-  color: #2563eb;
-}
-
-.cs-header__nav {
-  border-top: 1px solid #e5e5e5;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  overflow-x: auto;
-}
-
-.cs-header__link {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.4rem 0.7rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #666666;
-  text-decoration: none;
-  white-space: nowrap;
-  border-bottom: 2px solid transparent;
-}
-.cs-header__link:hover {
-  color: #111827;
-}
-.cs-header__link.is-active {
-  color: #2563eb;
-  font-weight: 700;
-  border-bottom-color: #2563eb;
-}
-
-/* ── 제목/설명 ──────────────────────────────────────────────── */
-.cs-tool-title {
-  margin: 0 0 0.5rem 0;
-  font-size: clamp(1.6rem, 3vw, 2.1rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: #111827;
-}
-
+/* ── 설명 ───────────────────────────────────────────────────── */
 .cs-tool-desc {
   margin: 0 0 0.5rem 0;
   font-size: 1rem;

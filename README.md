@@ -7,8 +7,11 @@
   `excel_merge/`의 `config.py / file_reader.py / key_builder.py / matcher.py /
   writer.py / coupang_logen.py` 로직을 그대로 이식 (`api/_lib/`)
 
-기존 `excel_merge/`(Streamlit Cloud 배포)는 건드리지 않았습니다. 이 프로젝트는
-완전히 별도의 배포 대상입니다.
+`codivostudio-web`(Astro, Cloudflare 배포)의 `/tools/rank-tracker/`,
+`/tools/keyword-analysis/`와 같은 방식으로, `codivostudio-web` 쪽 페이지가
+이 앱을 `<iframe>`으로 감싸서 보여줍니다. 그래서 이 앱은 자체 공통
+헤더/페이지 제목을 렌더링하지 않습니다 (감싸는 쪽 `ProgramLayout`이 이미
+렌더링하므로 중복 방지) — 변환 도구 UI만 담당합니다.
 
 ## 로컬 실행
 
@@ -41,8 +44,9 @@ vercel dev
    ```
 2. Vercel이 `package.json`을 보고 Next.js 프로젝트로, `requirements.txt` +
    `api/*.py`를 보고 Python 서버리스 함수로 자동 인식합니다.
-3. 배포 후 `app/components/Header.tsx`의 "엑셀변환기" 링크를 실제 배포
-   주소로 업데이트해주세요 (현재는 `#`로 자기 자신을 가리키도록 되어 있습니다).
+3. 배포 후 나오는 주소(예: `https://excel-merge-xxxx.vercel.app`)를
+   `codivostudio-web` 저장소의 `src/pages/tools/excel-converter/index.astro`
+   iframe `src`와 `src/data/programs.ts`에 반영해야 실제 사이트에서 보입니다.
 
 ## 구조
 
@@ -52,8 +56,8 @@ api/
   coupang-logen.py   # POST /api/coupang-logen (쿠팡 x 로젠)
   _lib/               # 매칭 로직 (excel_merge/*.py 원본 그대로 이식)
 app/
-  page.tsx            # 메인 화면
-  components/         # 헤더, 마켓플레이스/택배사 선택 UI, 업로드-변환 패널
+  page.tsx            # 메인 화면 (마켓플레이스/택배사 선택 UI만 렌더링)
+  components/         # 마켓플레이스/택배사 선택 UI, 업로드-변환 패널
 public/logo/          # 마켓플레이스/택배사 로고
 ```
 
