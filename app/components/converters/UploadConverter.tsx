@@ -106,7 +106,11 @@ export default function UploadConverter({
         {fields.map((field) => (
           <div className="cs-field" key={field.name}>
             <label htmlFor={field.name}>{field.label}</label>
-            <div className="cs-dropzone" style={{ ["--accent" as string]: accentColor }}>
+            <label
+              className="cs-dropzone"
+              htmlFor={field.name}
+              style={{ ["--accent" as string]: accentColor }}
+            >
               <span className="cs-dropzone__button">파일 선택</span>
               <span className="cs-dropzone__filename">
                 {files[field.name]?.name ?? "선택된 파일 없음"}
@@ -125,7 +129,7 @@ export default function UploadConverter({
                   setFiles((prev) => ({ ...prev, [field.name]: file }));
                 }}
               />
-            </div>
+            </label>
             {field.hint && <p className="cs-field__hint">{field.hint}</p>}
           </div>
         ))}
