@@ -4,7 +4,7 @@ export default function CoupangLogenPanel() {
   return (
     <UploadConverter
       title="쿠팡 윙 × 로젠택배"
-      endpoint="/api/coupang-logen"
+      endpoint="/tools/excel-converter/api/coupang-logen"
       accentColor="rgb(61, 172, 220)"
       fields={[
         {

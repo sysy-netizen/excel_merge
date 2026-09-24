@@ -13,9 +13,19 @@ export type StageLabel = {
   label: string;
 };
 
+export type PasswordFieldConfig = {
+  /** FormData 필드명 (예: "naverPassword") */
+  name: string;
+  label: string;
+  /** 성공한 비밀번호를 기억해둘 localStorage 키 */
+  storageKey: string;
+};
+
 export type ConverterResponse = {
   success: boolean;
   error?: string;
+  /** 비밀번호가 틀려서 실패한 경우 true (파일 매칭 실패와 구분용) */
+  passwordError?: boolean;
   stats?: Record<string, number>;
   unmatched?: string[];
   filename?: string;
@@ -39,6 +49,7 @@ export default function UploadConverter({
   fields,
   stageLabels,
   downloadLabel = "결과 다운로드",
+  passwordField,
 }: {
   title: string;
   endpoint: string;
@@ -46,6 +57,7 @@ export default function UploadConverter({
   fields: [FileFieldConfig, FileFieldConfig];
   stageLabels: StageLabel[];
   downloadLabel?: string;
+  passwordField?: PasswordFieldConfig;
 }) {
   const [files, setFiles] = useState<Record<string, File | null>>({
     [fields[0].name]: null,
@@ -55,7 +67,22 @@ export default function UploadConverter({
   const [result, setResult] = useState<ConverterResponse | null>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
+  const [password, setPassword] = useState("");
+  const [showPasswordField, setShowPasswordField] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
+
+  useEffect(() => {
+    if (!passwordField) return;
+    const saved = window.localStorage.getItem(passwordField.storageKey);
+    if (saved) {
+      setPassword(saved);
+      setShowPasswordField(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const bothSelected = fields.every((f) => files[f.name]);
+  const anySelected = fields.some((f) => files[f.name]);
 
   useEffect(() => {
     if (!bothSelected || status !== "idle") return;
@@ -69,15 +96,34 @@ export default function UploadConverter({
         const file = files[f.name];
         if (file) formData.append(f.name, file);
       });
+      if (passwordField && password) {
+        formData.append(passwordField.name, password);
+      }
 
       try {
         const res = await fetch(endpoint, { method: "POST", body: formData });
         const data: ConverterResponse = await res.json();
         setResult(data);
 
+        if (data.passwordError) {
+          setShowPasswordField(true);
+        }
+
         if (data.success && data.fileBase64 && data.mimeType) {
+          if (passwordField && password) {
+            window.localStorage.setItem(passwordField.storageKey, password);
+          }
+
           const blob = base64ToBlob(data.fileBase64, data.mimeType);
-          setDownloadUrl(URL.createObjectURL(blob));
+          const url = URL.createObjectURL(blob);
+          setDownloadUrl(url);
+
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = data.filename ?? "download";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
         }
       } catch {
         setResult({ success: false, error: "네트워크 오류로 처리에 실패했습니다. 다시 시도해주세요." });
@@ -96,11 +142,24 @@ export default function UploadConverter({
     setResult(null);
     if (downloadUrl) URL.revokeObjectURL(downloadUrl);
     setDownloadUrl(null);
+    setResetKey((k) => k + 1);
+  };
+
+  const retry = () => {
+    setStatus("idle");
+    setResult(null);
   };
 
   return (
     <div className="cs-tool" style={{ ["--accent" as string]: accentColor }}>
-      <h2>{title}</h2>
+      <div className="cs-tool__head">
+        <h2>{title}</h2>
+        {anySelected && (
+          <button type="button" className="cs-reset-btn" onClick={reset} disabled={status === "loading"}>
+            ↺ 초기화
+          </button>
+        )}
+      </div>
 
       <div className="cs-upload-row">
         {fields.map((field) => (
@@ -116,6 +175,7 @@ export default function UploadConverter({
                 {files[field.name]?.name ?? "선택된 파일 없음"}
               </span>
               <input
+                key={resetKey}
                 id={field.name}
                 type="file"
                 accept=".xlsx,.xls"
@@ -136,7 +196,7 @@ export default function UploadConverter({
 
         <div className="cs-hint-text">두 파일을 모두 올리면 자동으로 처리가 시작됩니다.</div>
 
-        <div>
+        <div className="cs-download-wrap">
           {result?.success && downloadUrl && result.filename && (
             <a
               className="cs-download-btn"
@@ -149,6 +209,24 @@ export default function UploadConverter({
           )}
         </div>
       </div>
+
+      {passwordField && showPasswordField && (
+        <div className="cs-password-field">
+          <label htmlFor={passwordField.name}>{passwordField.label}</label>
+          <input
+            id={passwordField.name}
+            type="text"
+            inputMode="numeric"
+            value={password}
+            disabled={status === "loading"}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="예: 1234"
+          />
+          <p className="cs-field__hint">
+            한 번 성공하면 이 브라우저에 기억해둬서 다음부터는 다시 입력하지 않아도 됩니다.
+          </p>
+        </div>
+      )}
 
       {status === "loading" && (
         <div className="cs-status cs-status--progress">처리 중입니다...</div>
@@ -182,7 +260,7 @@ export default function UploadConverter({
               <div>
                 <button
                   type="button"
-                  onClick={reset}
+                  onClick={result.passwordError ? retry : reset}
                   style={{ marginTop: "0.75rem", cursor: "pointer" }}
                 >
                   다시 시도

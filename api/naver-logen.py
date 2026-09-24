@@ -15,6 +15,7 @@ import base64
 import os
 import sys
 
+import msoffcrypto.exceptions
 from flask import Flask, jsonify, request
 
 sys.path.append(os.path.dirname(__file__))
@@ -28,6 +29,9 @@ app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024  # 20MB
 def naver_logen():
     naver_file = request.files.get("naver")
     logen_file = request.files.get("logen")
+    # 판매자가 네이버 다운로드 비밀번호를 기본값(1234)이 아닌 다른 값으로
+    # 바꿔둔 경우, 프론트엔드가 이 필드로 실제 비밀번호를 보내줍니다.
+    naver_password = request.form.get("naverPassword") or None
 
     if not naver_file or not logen_file:
         return jsonify({
@@ -36,7 +40,15 @@ def naver_logen():
         })
 
     try:
-        a_df = file_reader.read_a_file(naver_file)
+        try:
+            a_df = file_reader.read_a_file(naver_file, naver_password)
+        except msoffcrypto.exceptions.InvalidKeyError:
+            return jsonify({
+                "success": False,
+                "passwordError": True,
+                "error": "네이버 파일 비밀번호가 올바르지 않습니다. 네이버 판매자센터에서 설정한 다운로드 비밀번호를 아래에 입력해주세요.",
+            })
+
         b_df = file_reader.read_b_file(logen_file)
 
         key_rows = key_builder.build_key_rows(a_df)

@@ -11,23 +11,30 @@ const COURIERS = ["로젠택배", "CJ대한통운", "우체국택배", "롯데�
 type Marketplace = (typeof MARKETPLACES)[number];
 type Courier = (typeof COURIERS)[number];
 
-// (마켓플레이스, 택배사) -> 실제로 이용 가능한지 여부.
-// 새 택배사가 준비되면 여기 값만 true로 바꾸면 카드에 자동으로 반영됩니다.
-const SERVICES: Record<string, boolean> = {
-  "네이버 스마트스토어|로젠택배": true,
-  "쿠팡 윙|로젠택배": true,
+type TierStatus = "available" | "recruiting" | "none";
+
+// (마켓플레이스, 택배사) -> 무료(병합)/유료(발송자동화) 각각의 진행 상태.
+// - free: "available"면 카드에 병합 도구 선택 가능, 그 외("none")면 준비중(ComingSoon) 표시
+// - paid: "recruiting"이면 카드에 베타 사전테스트 안내 배지가 뜸, "available"이면 나중에
+//   유료 전환 시 사용(지금은 미사용), "none"이면 배지 자체를 안 보여줌
+// 새 택배사/새 단계가 열리면 여기 값만 바꾸면 카드에 자동 반영됩니다.
+const SERVICES: Record<string, { free: TierStatus; paid: TierStatus }> = {
+  "네이버 스마트스토어|로젠택배": { free: "available", paid: "recruiting" },
+  "쿠팡 윙|로젠택배": { free: "available", paid: "none" },
 };
 
+const DEFAULT_SERVICE = { free: "none", paid: "none" } as const;
+
 const LOGOS: Record<Marketplace, string> = {
-  "네이버 스마트스토어": "/logo/naver_logo.png",
-  "쿠팡 윙": "/logo/coupang_logo.png",
+  "네이버 스마트스토어": "/tools/excel-converter/logo/naver_logo.png",
+  "쿠팡 윙": "/tools/excel-converter/logo/coupang_logo.png",
 };
 
 const COURIER_LOGOS: Record<Courier, string> = {
-  "로젠택배": "/logo/로젠택배-BI.png",
-  "CJ대한통운": "/logo/cj_logo.png",
-  "우체국택배": "/logo/우체국_logo.png",
-  "롯데택배": "/logo/롯데_logo.png",
+  "로젠택배": "/tools/excel-converter/logo/로젠택배-BI.png",
+  "CJ대한통운": "/tools/excel-converter/logo/cj_logo.png",
+  "우체국택배": "/tools/excel-converter/logo/우체국_logo.png",
+  "롯데택배": "/tools/excel-converter/logo/롯데_logo.png",
 };
 
 const ACCENT_COLORS: Record<Marketplace, string> = {
@@ -69,7 +76,8 @@ export default function ToolSelector() {
 
           <div className="cs-cards">
             {COURIERS.map((courier) => {
-              const available = SERVICES[serviceKey(marketplace, courier)] ?? false;
+              const service = SERVICES[serviceKey(marketplace, courier)] ?? DEFAULT_SERVICE;
+              const available = service.free === "available";
               const isSelected =
                 selected?.marketplace === marketplace && selected?.courier === courier;
 
@@ -89,6 +97,14 @@ export default function ToolSelector() {
                   >
                     선택하기
                   </button>
+                  {service.paid === "recruiting" && (
+                    <a
+                      className="cs-card__paid-badge"
+                      href={`/tools/excel-converter/dispatch?from=${encodeURIComponent(courier)}`}
+                    >
+                      🧪 자동발송 프로그램 베타 안내 →
+                    </a>
+                  )}
                 </div>
               );
             })}

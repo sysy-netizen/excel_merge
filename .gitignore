@@ -18,3 +18,6 @@ venv/
 테스트파일-삭제예정/
 *.xlsx
 *.xls
+
+.vercel
+.env*

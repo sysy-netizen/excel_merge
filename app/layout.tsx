@@ -14,7 +14,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <nav className="cs-program-nav" aria-label="Seller Tools 프로그램">
+          <ul>
+            <li>
+              <a className="cs-program-link" href="/tools/all-tools/">
+                전체도구
+              </a>
+            </li>
+            <li>
+              <a className="cs-program-link cs-program-link--active" href="/tools/excel-converter/" aria-current="page">
+                엑셀변환기
+              </a>
+            </li>
+          </ul>
+        </nav>
+        {children}
+      </body>
     </html>
   );
 }
