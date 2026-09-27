@@ -26,7 +26,7 @@
   display: inline-flex;
   align-items: center;
   padding: 0.6rem 0.7rem;
-  font-size: 0.85rem;
+  font-size: 0.925rem;
   font-weight: 500;
   color: #666666;
   text-decoration: none;
@@ -131,7 +131,7 @@ body {
 
 .cs-card__status {
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.925rem;
   color: #666666;
 }
 
@@ -143,7 +143,7 @@ body {
   background: #ffffff;
   color: #111827;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.975rem;
   cursor: pointer;
 }
 .cs-card__button:hover {
@@ -159,7 +159,7 @@ body {
   display: block;
   width: 100%;
   text-align: center;
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: #92400e;
   background: #fffbeb;
@@ -248,7 +248,7 @@ body {
 
 .cs-drop-error {
   margin: 0.75rem 0 0;
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #dc2626;
 }
@@ -285,13 +285,13 @@ body {
 
 .cs-upload-card__sub {
   margin: 0.2rem 0 0;
-  font-size: 0.9rem;
+  font-size: 0.975rem;
   color: #6b7280;
 }
 
 .cs-upload-card__hint {
   margin: 0.7rem 0 0;
-  font-size: 0.85rem;
+  font-size: 0.925rem;
   color: #6b7280;
   overflow-wrap: anywhere;
 }
@@ -321,7 +321,7 @@ body {
   background: var(--accent);
   color: #ffffff;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1rem;
   white-space: nowrap;
 }
 
@@ -334,7 +334,7 @@ body {
   align-self: center;
   min-width: 0;
   padding: 0.5rem 1rem;
-  font-size: 0.92rem;
+  font-size: 1rem;
   color: #6b7280;
   white-space: nowrap;
   overflow: hidden;
@@ -375,7 +375,7 @@ body {
 .cs-info ul {
   margin: 0;
   padding-left: 1.4rem;
-  font-size: 0.92rem;
+  font-size: 1rem;
   line-height: 1.8;
   color: #374151;
 }
@@ -389,7 +389,7 @@ body {
 .cs-password-field label {
   display: block;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.975rem;
   margin-bottom: 0.4rem;
 }
 
@@ -398,7 +398,7 @@ body {
   padding: 0.6rem 0.75rem;
   border-radius: 8px;
   border: 1px solid #d0d5dd;
-  font-size: 0.9rem;
+  font-size: 0.975rem;
 }
 
 .cs-password-field input:focus {
@@ -447,7 +447,7 @@ body {
 
 .cs-result__desc {
   margin: 0.35rem 0 0;
-  font-size: 0.92rem;
+  font-size: 1rem;
   line-height: 1.6;
   color: #4b5563;
 }
@@ -455,7 +455,7 @@ body {
 .cs-result__stats {
   margin: 0.4rem 0 0;
   word-break: keep-all;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   color: #6b7280;
 }
 
@@ -546,7 +546,7 @@ body {
 .cs-unmatched-list {
   margin: 0.5rem 0 0;
   padding-left: 1.2rem;
-  font-size: 0.85rem;
+  font-size: 0.925rem;
   color: #4b5563;
 }
 
@@ -555,7 +555,7 @@ body {
   background: #fffbeb;
   color: #92400e;
   border-radius: 10px;
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.6;
 }
 
