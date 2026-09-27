@@ -15,7 +15,7 @@ export default function ComingSoon({
 
   return (
     <div className="cs-tool">
-      <h2>
+      <h2 className="cs-tool__title">
         {marketplace} × {courier}
       </h2>
       <div className="cs-coming-soon">

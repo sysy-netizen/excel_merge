@@ -49,6 +49,8 @@ body {
   color: #111827;
   background: #ffffff;
   font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans KR", sans-serif;
+  /* 한국어 단어가 중간에서 끊기지 않게 (예: "로젠택/배") */
+  word-break: keep-all;
 }
 
 .cs-page {
@@ -172,8 +174,9 @@ body {
 
 /* ── 변환 도구 패널 ─────────────────────────────────────────── */
 .cs-tool {
-  margin-top: 1.25rem;
-  padding-top: 1.25rem;
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, #ffffff);
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
   border-top: 1px solid #e5e5e5;
 }
 
@@ -183,108 +186,198 @@ body {
   margin: 0 0 1rem 0;
 }
 
-.cs-tool__head {
+.cs-tool__title {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 0.75rem;
+  font-size: 1.6rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.25rem !important;
 }
-.cs-tool__head h2 {
-  margin: 0 0 1rem 0;
-}
-
-.cs-reset-btn {
+.cs-tool__title::before {
+  content: "";
   flex: none;
-  margin-bottom: 1rem;
-  padding: 0.4rem 0.85rem;
-  border-radius: 8px;
-  border: 1px solid #d0d5dd;
-  background: #ffffff;
-  color: #666666;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-.cs-reset-btn:hover {
-  border-color: #999999;
-  color: #111827;
-}
-.cs-reset-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  width: 5px;
+  height: 1.3em;
+  border-radius: 3px;
+  background: var(--accent);
 }
 
+/* 파일 업로드 카드 2개 */
 .cs-upload-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 1rem;
-  align-items: start;
+  align-items: stretch;
 }
 
-.cs-hint-text,
-.cs-download-wrap {
-  grid-column: 1 / -1;
-}
-
-@media (max-width: 640px) {
+@media (max-width: 720px) {
   .cs-upload-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cs-tool__title {
+    font-size: 1.3rem !important;
   }
 }
 
-.cs-field label {
-  display: block;
-  font-weight: 600;
-  font-size: 0.9rem;
-  margin-bottom: 0.4rem;
-}
-
-.cs-field__hint {
-  margin: 0.3rem 0 0;
-  font-size: 0.8rem;
-  color: #666666;
-}
-
-.cs-dropzone {
-  --accent: #666666;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
-  background: color-mix(in srgb, var(--accent) 6%, transparent);
-  border: 2px dashed color-mix(in srgb, var(--accent) 50%, transparent);
+.cs-upload-card {
+  min-width: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 0.75rem 1rem;
-  cursor: pointer;
+  padding: 1.25rem 1.25rem 1.1rem;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
 }
 
-.cs-dropzone input[type="file"] {
-  display: none;
+.cs-upload-card {
+  transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+.cs-upload-card.is-dragover {
+  border: 1px dashed var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, #ffffff);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.cs-upload-card.is-dragover .cs-upload-card__sub {
+  color: var(--accent);
+  font-weight: 700;
+}
+.cs-upload-card.is-dragover * {
+  pointer-events: none;
 }
 
-.cs-dropzone__button {
-  flex: none;
-  background: var(--accent);
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.65rem 1.4rem;
+.cs-drop-error {
+  margin: 0.75rem 0 0;
+  font-size: 0.88rem;
   font-weight: 600;
-  font-size: 0.85rem;
-  white-space: nowrap;
+  color: #dc2626;
 }
 
-.cs-dropzone__filename {
-  width: 100%;
+.cs-upload-card__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.cs-upload-card__num {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.cs-upload-card__title {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.3;
+  margin-top: 0.15rem;
+}
+
+.cs-upload-card__sub {
+  margin: 0.2rem 0 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.cs-upload-card__hint {
+  margin: 0.7rem 0 0;
   font-size: 0.85rem;
-  color: #333333;
+  color: #6b7280;
   overflow-wrap: anywhere;
 }
 
-.cs-hint-text {
-  font-size: 0.85rem;
-  color: #666666;
-  padding-top: 0.5rem;
+/* 파일 선택 (버튼 + 파일명 한 줄) */
+.cs-picker {
+  display: flex;
+  align-items: stretch;
+  min-height: 3rem;
+  background: #f5f6f8;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.cs-picker input[type="file"] {
+  display: none;
+}
+
+.cs-picker__button {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1.25rem;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.cs-picker:hover .cs-picker__button {
+  filter: brightness(0.95);
+}
+
+.cs-picker__filename {
+  flex: 1;
+  align-self: center;
+  min-width: 0;
+  padding: 0.5rem 1rem;
+  font-size: 0.92rem;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cs-picker__filename.has-file {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* 안내 박스 */
+.cs-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  background: #f5f7f7;
+  border: 1px solid #eceff1;
+  border-radius: 12px;
+}
+
+.cs-info__icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.2rem;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.cs-info ul {
+  margin: 0;
+  padding-left: 1.4rem;
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: #374151;
 }
 
 /* ── 비밀번호 입력 (네이버 파일 전용) ──────────────────────────── */
@@ -313,56 +406,148 @@ body {
   outline-offset: 1px;
 }
 
-.cs-download-btn {
-  margin-top: 0.5rem;
-  width: 100%;
-  height: 96px;
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: #ffffff;
-  background: var(--accent, #666666);
-  border: none;
-  border-radius: 12px;
-  padding: 1rem;
-  cursor: pointer;
+/* ── 결과 카드 (진행 / 완료 / 오류) ───────────────────────────── */
+.cs-result {
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  text-decoration: none;
+  gap: 1.25rem;
+  margin-top: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #eceff1;
+  background: #f7f9f8;
 }
 
-/* ── 상태 메시지 박스 ───────────────────────────────────────── */
-.cs-status {
-  margin-top: 1rem;
-  padding: 0.9rem 1rem;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  line-height: 1.6;
+.cs-result__icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 1.8rem;
+  font-weight: 800;
 }
-.cs-status--progress {
-  background: #f3f4f6;
+
+.cs-result__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.cs-result__title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+
+.cs-result__desc {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.cs-result__stats {
+  margin: 0.4rem 0 0;
+  word-break: keep-all;
+  font-size: 0.82rem;
+  color: #6b7280;
+}
+
+.cs-result__actions {
+  flex: none;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.cs-result--progress {
+  gap: 0.9rem;
+}
+.cs-result--progress .cs-result__title {
+  font-size: 1rem;
   color: #374151;
 }
-.cs-status--success {
-  background: #ecfdf5;
-  color: #065f46;
+
+.cs-result--error {
+  --accent: #dc2626;
+  --accent-soft: #fee2e2;
+  background: #fef6f6;
+  border-color: #fde2e2;
+  align-items: flex-start;
 }
-.cs-status--error {
-  background: #fef2f2;
-  color: #991b1b;
+
+@media (max-width: 720px) {
+  .cs-result {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cs-result__actions {
+    width: 100%;
+  }
+  .cs-result__actions .cs-btn {
+    flex: 1;
+  }
+}
+
+.cs-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 3.25rem;
+  padding: 0 1.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cs-btn--primary {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #ffffff;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.cs-btn--primary:hover {
+  filter: brightness(0.95);
+}
+
+.cs-btn--ghost {
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  color: #111827;
+}
+.cs-btn--ghost:hover {
+  border-color: #9ca3af;
+}
+
+.cs-spinner {
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  border: 3px solid var(--accent-soft);
+  border-top-color: var(--accent);
+  animation: cs-spin 0.8s linear infinite;
+}
+
+@keyframes cs-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .cs-unmatched-list {
   margin: 0.5rem 0 0;
   padding-left: 1.2rem;
   font-size: 0.85rem;
-}
-
-.cs-tool-footnote {
-  margin-top: 0.75rem;
-  font-size: 0.8rem;
-  color: #666666;
+  color: #4b5563;
 }
 
 .cs-coming-soon {

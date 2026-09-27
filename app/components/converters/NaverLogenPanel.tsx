@@ -9,12 +9,12 @@ export default function NaverLogenPanel() {
       fields={[
         {
           name: "naver",
-          label: "① 네이버 파일 업로드 (.xlsx, .xls)",
+          label: "네이버 주문 파일",
           hint: "예) 스마트스토어_선택주문발주발송관리.xlsx",
         },
         {
           name: "logen",
-          label: "② 로젠 파일 업로드 (.xlsx, .xls)",
+          label: "로젠 출력 파일",
           hint: "예) 주문등록_출력(복수건)_출력완료(**)건.xlsx",
         },
       ]}

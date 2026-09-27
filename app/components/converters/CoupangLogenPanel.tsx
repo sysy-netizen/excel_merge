@@ -9,11 +9,11 @@ export default function CoupangLogenPanel() {
       fields={[
         {
           name: "coupang",
-          label: "① 쿠팡 파일 업로드 (.xlsx, .xls)",
+          label: "쿠팡 주문 파일",
         },
         {
           name: "logen",
-          label: "② 로젠 파일 업로드 (.xlsx, .xls)",
+          label: "로젠 출력 파일",
           hint: "예) 주문등록_출력(복수건)_출력완료(**)건.xlsx",
         },
       ]}
