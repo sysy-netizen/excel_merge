@@ -4,6 +4,12 @@
    쓰던 제목/설명은 이제 없음). 다만 사이트 전체 도구 탭 내비(ProgramNav)는
    Astro 쪽이 렌더링하지 않으므로 이 앱이 직접 내장합니다 (.cs-program-nav). */
 
+/* 큰 모니터에서 페이지 전체를 비율대로 키웁니다 (codivostudio-web과 같은 규칙).
+   1440px 이하: 16px → 1920px: 19.2px → 최대 20px */
+html {
+  font-size: clamp(16px, 0.6667vw + 6.4px, 20px);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -28,7 +34,7 @@
   padding: 0.6rem 0.7rem;
   font-size: 0.925rem;
   font-weight: 500;
-  color: #666666;
+  color: #444444;
   text-decoration: none;
   white-space: nowrap;
   border-bottom: 2px solid transparent;
@@ -54,7 +60,7 @@ body {
 }
 
 .cs-page {
-  max-width: 1100px;
+  max-width: 68.75rem;
   margin: 0 auto;
   padding: 0 1.5rem 3rem;
 }
@@ -62,9 +68,9 @@ body {
 /* ── 설명 ───────────────────────────────────────────────────── */
 .cs-tool-desc {
   margin: 0 0 0.5rem 0;
-  font-size: 1rem;
+  font-size: 1.125rem;
   line-height: 1.7;
-  color: #666666;
+  color: #444444;
 }
 
 /* ── 마켓플레이스 그룹 (테두리 박스) ───────────────────────────── */
@@ -132,7 +138,7 @@ body {
 .cs-card__status {
   text-align: center;
   font-size: 0.925rem;
-  color: #666666;
+  color: #444444;
 }
 
 .cs-card__button {
@@ -286,13 +292,13 @@ body {
 .cs-upload-card__sub {
   margin: 0.2rem 0 0;
   font-size: 0.975rem;
-  color: #6b7280;
+  color: #4b5563;
 }
 
 .cs-upload-card__hint {
   margin: 0.7rem 0 0;
   font-size: 0.925rem;
-  color: #6b7280;
+  color: #4b5563;
   overflow-wrap: anywhere;
 }
 
@@ -335,7 +341,7 @@ body {
   min-width: 0;
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  color: #6b7280;
+  color: #4b5563;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -456,7 +462,7 @@ body {
   margin: 0.4rem 0 0;
   word-break: keep-all;
   font-size: 0.9rem;
-  color: #6b7280;
+  color: #4b5563;
 }
 
 .cs-result__actions {
