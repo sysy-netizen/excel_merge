@@ -167,8 +167,10 @@ html {
   white-space: nowrap;
   border-bottom: 2px solid transparent;
 }
+/* 롤오버하면 활성 탭처럼 주황 글자와 주황 밑줄로 바뀝니다 */
 .cs-program-link:hover {
-  color: #0a0a0a;
+  color: #ff4f0a;
+  border-bottom-color: #ff4f0a;
 }
 .cs-program-link--active {
   color: #ff4f0a;
