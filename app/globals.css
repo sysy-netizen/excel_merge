@@ -701,3 +701,304 @@ body {
   text-decoration: underline;
 }
 
+
+/* ── 이용안내 페이지 ─────────────────────────────────────────── */
+.cs-guide-eyebrow {
+  margin: 1.5rem 0 0.4rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: #444444;
+}
+.cs-guide-title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0a0a0a;
+}
+.cs-guide-lead {
+  margin: 0 0 1.5rem;
+  font-size: 1.125rem;
+  color: #444444;
+}
+.cs-guide-box {
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+}
+.cs-guide-box__title {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+.cs-guide-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+.cs-guide-flow__item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.cs-guide-flow__card {
+  flex: 1;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  height: 100%;
+}
+.cs-guide-flow__card strong {
+  font-size: 1.05rem;
+}
+.cs-guide-flow__card p {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #555555;
+}
+.cs-guide-flow__no {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ff4f0a;
+}
+.cs-guide-flow__arrow {
+  font-size: 1.5rem;
+  color: #888888;
+}
+.cs-guide-heading {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+.cs-guide-acc__item {
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  background: #ffffff;
+}
+.cs-guide-acc__head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 1.25rem;
+  background: none;
+  border: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.cs-guide-acc__item.is-open .cs-guide-acc__head {
+  background: #f6f6f6;
+  border-bottom: 1px solid #e6e6e6;
+}
+.cs-guide-acc__no {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: #e8e8e8;
+  color: #444444;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cs-guide-acc__item.is-open .cs-guide-acc__no {
+  background: #777777;
+  color: #ffffff;
+}
+.cs-guide-acc__icon {
+  flex: none;
+  font-size: 1.3rem;
+}
+.cs-guide-acc__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.cs-guide-acc__text strong {
+  font-size: 1.1rem;
+}
+.cs-guide-acc__text small {
+  font-size: 0.9rem;
+  color: #666666;
+}
+.cs-guide-acc__chevron {
+  font-size: 1.2rem;
+  color: #666666;
+}
+.cs-guide-acc__body {
+  padding: 1.25rem;
+}
+.cs-guide-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid #e6e6e6;
+  margin-bottom: 1rem;
+}
+.cs-guide-tab {
+  padding: 0.6rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  font-size: 0.95rem;
+  color: #444444;
+  cursor: pointer;
+  margin-bottom: -1px;
+}
+.cs-guide-tab.is-active {
+  color: #ff4f0a;
+  font-weight: 700;
+  border-bottom-color: #ff4f0a;
+}
+.cs-guide-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+.cs-guide-step {
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+}
+.cs-guide-step__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+.cs-guide-step__no {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: #cfcfcf;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cs-guide-step p {
+  margin: 0.5rem 0 0.75rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #555555;
+}
+.cs-guide-step__image {
+  margin-top: auto;
+  height: 5.5rem;
+  border-radius: 8px;
+  background: #f1f1f1;
+  color: #888888;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cs-guide-step__caption {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #888888;
+}
+.cs-guide-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  line-height: 1.8;
+  color: #333333;
+}
+.cs-guide-list li + li {
+  margin-top: 0.3rem;
+}
+.cs-guide-text {
+  margin: 0 0 0.75rem;
+  line-height: 1.7;
+  color: #333333;
+}
+.cs-guide-list + .cs-guide-text {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+.cs-guide-help {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #f3f3f3;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+}
+.cs-guide-help > div {
+  flex: 1;
+}
+.cs-guide-help p {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: #666666;
+}
+.cs-guide-help__icon {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: #888888;
+  color: #ffffff;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cs-guide-help__button {
+  padding: 0.6rem 1.25rem;
+  border: 1px solid #cfcfcf;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #0a0a0a;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.cs-guide-help__button:hover {
+  border-color: #ff4f0a;
+  color: #ff4f0a;
+}
+@media (max-width: 900px) {
+  .cs-guide-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 720px) {
+  .cs-guide-flow {
+    flex-direction: column;
+  }
+  .cs-guide-flow__item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .cs-guide-flow__arrow {
+    align-self: center;
+    transform: rotate(90deg);
+  }
+  .cs-guide-steps {
+    grid-template-columns: 1fr;
+  }
+  .cs-guide-help {
+    flex-wrap: wrap;
+  }
+}
