@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import SiteHeader from "./components/SiteHeader";
 
 export const metadata: Metadata = {
   title: "대량발송 파일 변환기 | Codivo Studio",
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
+        <SiteHeader />
         <nav className="cs-program-nav" aria-label="Seller Tools 프로그램">
           <ul>
             <li>

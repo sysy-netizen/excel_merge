@@ -97,14 +97,6 @@ export default function ToolSelector() {
                   >
                     선택하기
                   </button>
-                  {service.paid === "recruiting" && (
-                    <a
-                      className="cs-card__paid-badge"
-                      href={`/tools/excel-converter/dispatch?from=${encodeURIComponent(courier)}`}
-                    >
-                      🧪 자동발송 프로그램 베타 안내 →
-                    </a>
-                  )}
                 </div>
               );
             })}
