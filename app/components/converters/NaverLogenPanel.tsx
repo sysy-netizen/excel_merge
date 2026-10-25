@@ -26,6 +26,7 @@ export default function NaverLogenPanel() {
       passwordField={{
         name: "naverPassword",
         label: "네이버 파일 비밀번호",
+        defaultValue: "1234",
         storageKey: "cs-excel-merge-naver-password",
       }}
     />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export type FileFieldConfig = {
   name: string;
@@ -17,7 +17,9 @@ export type PasswordFieldConfig = {
   /** FormData 필드명 (예: "naverPassword") */
   name: string;
   label: string;
-  /** 성공한 비밀번호를 기억해둘 localStorage 키 */
+  /** 입력칸에 처음 채워둘 값 (예: 네이버 기본 비밀번호 "1234") */
+  defaultValue: string;
+  /** "이 브라우저에 기억"을 선택했을 때 성공한 비밀번호를 저장할 localStorage 키 */
   storageKey: string;
 };
 
@@ -67,8 +69,11 @@ export default function UploadConverter({
   const [result, setResult] = useState<ConverterResponse | null>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
-  const [password, setPassword] = useState("");
-  const [showPasswordField, setShowPasswordField] = useState(false);
+  const [password, setPassword] = useState(passwordField?.defaultValue ?? "");
+  const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
+  // 마지막으로 변환을 요청할 때 쓴 비밀번호 (바뀌었는지 비교용)
+  const usedPassword = useRef<string | null>(null);
   const [resetKey, setResetKey] = useState(0);
   const [dragOver, setDragOver] = useState<string | null>(null);
   const [dropError, setDropError] = useState<string | null>(null);
@@ -78,7 +83,7 @@ export default function UploadConverter({
     const saved = window.localStorage.getItem(passwordField.storageKey);
     if (saved) {
       setPassword(saved);
-      setShowPasswordField(true);
+      setRemember(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -100,18 +105,15 @@ export default function UploadConverter({
       if (passwordField && password) {
         formData.append(passwordField.name, password);
       }
+      usedPassword.current = password;
 
       try {
         const res = await fetch(endpoint, { method: "POST", body: formData });
         const data: ConverterResponse = await res.json();
         setResult(data);
 
-        if (data.passwordError) {
-          setShowPasswordField(true);
-        }
-
         if (data.success && data.fileBase64 && data.mimeType) {
-          if (passwordField && password) {
+          if (passwordField && password && remember) {
             window.localStorage.setItem(passwordField.storageKey, password);
           }
 
@@ -170,8 +172,25 @@ export default function UploadConverter({
   };
 
   const retry = () => {
+    if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+    setDownloadUrl(null);
     setStatus("idle");
     setResult(null);
+  };
+
+  // 파일을 올린 뒤 비밀번호를 고친 경우, 입력을 마치면(포커스 이동/Enter) 다시 변환합니다.
+  const rerunIfPasswordChanged = () => {
+    if (bothSelected && status === "done" && password !== usedPassword.current) retry();
+  };
+
+  const toggleRemember = (checked: boolean) => {
+    if (!passwordField) return;
+    setRemember(checked);
+    if (!checked) {
+      window.localStorage.removeItem(passwordField.storageKey);
+    } else if (result?.success && password) {
+      window.localStorage.setItem(passwordField.storageKey, password);
+    }
   };
 
   const stageSummary = result?.stats
@@ -249,21 +268,52 @@ export default function UploadConverter({
 
       {dropError && <p className="cs-drop-error">{dropError}</p>}
 
-      {passwordField && showPasswordField && (
+      {passwordField && (
         <div className="cs-password-field">
-          <label htmlFor={passwordField.name}>{passwordField.label}</label>
-          <input
-            id={passwordField.name}
-            type="text"
-            inputMode="numeric"
-            value={password}
-            disabled={status === "loading"}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="예: 1234"
-          />
-          <p className="cs-upload-card__hint">
-            한 번 성공하면 이 브라우저에 기억해둬서 다음부터는 다시 입력하지 않아도 됩니다.
-          </p>
+          <span className="cs-password-field__icon" aria-hidden="true">
+            <LockIcon />
+          </span>
+          <div className="cs-password-field__info">
+            <label htmlFor={passwordField.name}>{passwordField.label}</label>
+            <p>네이버 주문 엑셀 다운로드 시 설정한 비밀번호를 입력하세요.</p>
+          </div>
+          <div className="cs-password-field__input">
+            <div className="cs-password-field__row">
+              <input
+                id={passwordField.name}
+                type={showPassword ? "text" : "password"}
+                autoComplete="off"
+                value={password}
+                disabled={status === "loading"}
+                onChange={(e) => setPassword(e.target.value)}
+                onBlur={rerunIfPasswordChanged}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") rerunIfPasswordChanged();
+                }}
+                placeholder="비밀번호 입력"
+              />
+              <button
+                type="button"
+                className="cs-password-field__toggle"
+                aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+                onClick={() => setShowPassword((v) => !v)}
+              >
+                <EyeIcon off={showPassword} />
+              </button>
+            </div>
+            <span className="cs-password-field__default">기본값: {passwordField.defaultValue}</span>
+          </div>
+          <label className="cs-password-field__remember">
+            <input
+              type="checkbox"
+              checked={remember}
+              onChange={(e) => toggleRemember(e.target.checked)}
+            />
+            <span>
+              이 브라우저에 비밀번호 저장
+              <small>공용 PC에서는 사용하지 마세요.</small>
+            </span>
+          </label>
         </div>
       )}
 
@@ -361,6 +411,25 @@ function DownloadIcon() {
       <path d="M12 3v12" />
       <path d="m7 10 5 5 5-5" />
       <path d="M4 17v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="4" y="11" width="16" height="10" rx="2" />
+      <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+    </svg>
+  );
+}
+
+function EyeIcon({ off }: { off: boolean }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+      {off && <path d="M3 3l18 18" />}
     </svg>
   );
 }
