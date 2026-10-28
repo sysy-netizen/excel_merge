@@ -6,11 +6,6 @@ import ToolSelector from "./components/ToolSelector";
 export default function Home() {
   return (
     <main className="cs-page">
-      <p className="cs-tool-desc">
-        마켓플레이스와 택배사를 선택하면, 그 자리 바로 밑에 변환 도구가 나타납니다.{" "}
-        <a href="/tools/excel-converter/guide">처음이신가요? 이용안내 보기 →</a>
-      </p>
-
       <ToolSelector />
     </main>
   );

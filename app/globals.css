@@ -14,168 +14,211 @@ html {
   box-sizing: border-box;
 }
 
-/* ── 사이트 공통 헤더 (codivostudio-web의 Header.astro와 동일한 값) ─────── */
+/* ── 사이트 공통 헤더 (codivostudio-web ver2의 Header와 동일한 값) ─────── */
 .cs-site-header {
-  background: #0a0a0a;
-  border-bottom: 1px solid #222;
-  position: relative;
-  z-index: 50;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(250, 250, 250, 0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e4e4e7;
+  font-family: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Segoe UI", "Noto Sans KR", sans-serif;
 }
 .cs-site-header__inner {
-  max-width: 68.75rem;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem;
-  height: 72px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  padding: 0 1.25rem;
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 .cs-site-header__logo {
   display: inline-flex;
   align-items: center;
+  gap: 0.625rem;
   text-decoration: none;
-  justify-self: start;
+  color: #18181b;
 }
 .cs-site-header__logo img {
   display: block;
-  height: 34px;
+  height: 1.75rem;
   width: auto;
 }
-.cs-site-header__nav ul {
+.cs-site-header__brand {
   display: flex;
-  gap: 1.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  flex-direction: column;
+  line-height: 1;
 }
-.cs-site-header__nav a {
-  display: inline-block;
+.cs-site-header__name {
+  font-size: 15px;
+  letter-spacing: 0.06em;
+}
+.cs-site-header__name b {
+  font-weight: 800;
+}
+.cs-site-header__name .is-vivo {
+  color: #2563eb;
+}
+.cs-site-header__name em {
+  font-style: normal;
+  font-weight: 400;
+  color: #71717a;
+}
+.cs-site-header__meaning {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: #71717a;
+}
+.cs-site-header__meaning i {
+  font-style: normal;
+  color: #2563eb;
+}
+/* 좁은 화면: 이름이 줄바꿈되지 않게 하고 오른쪽 버튼을 조금 줄인다 */
+.cs-site-header__name {
+  white-space: nowrap;
+}
+@media (max-width: 480px) {
+  .cs-site-header__inner {
+    padding: 0 0.75rem;
+  }
+  .cs-site-header__logo {
+    gap: 0.5rem;
+  }
+  .cs-site-header__name {
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+  .cs-site-header__meaning {
+    letter-spacing: 0.16em;
+  }
+  .cs-site-header__link {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.8125rem;
+  }
+  .cs-site-header__close {
+    padding: 0 0.625rem;
+    font-size: 0.8125rem;
+  }
+}
+@media (max-width: 360px) {
+  .cs-site-header__logo img {
+    height: 1.5rem;
+  }
+  .cs-site-header__name {
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+  .cs-site-header__meaning {
+    letter-spacing: 0.1em;
+  }
+  .cs-site-header__link {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.75rem;
+  }
+  .cs-site-header__close {
+    padding: 0 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+/* 640px 이상: 이름 옆에 세로 구분선과 함께 한 줄로 */
+@media (min-width: 640px) {
+  .cs-site-header__brand {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+  .cs-site-header__meaning {
+    margin-top: 0;
+    padding-left: 12px;
+    border-left: 1px solid #d4d4d8;
+    line-height: 16px;
+  }
+}
+.cs-site-header__link {
+  padding: 0.5rem 0.875rem;
+  border-radius: 8px;
+  color: #71717a;
+  font-size: 0.875rem;
+  font-weight: 500;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 1rem;
-  padding-bottom: 0.35rem;
-  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color 0.15s;
 }
-.cs-site-header__nav a:hover,
-.cs-site-header__nav a.active {
-  color: #ff4f0a;
-}
-.cs-site-header__nav a.active {
-  border-color: #ff4f0a;
+.cs-site-header__link:hover {
+  color: #18181b;
 }
 .cs-site-header__actions {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  justify-self: end;
+  gap: 0.25rem;
 }
-.cs-site-header__outline {
-  display: inline-flex;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 0.55rem 1rem;
-  border-radius: 6px;
-  text-decoration: none;
-  white-space: nowrap;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-}
-.cs-site-header__outline:hover {
-  border-color: #ff4f0a;
-  color: #ff4f0a;
-}
-.cs-site-header__toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: #fff;
-  padding: 0.4rem;
+.cs-site-header__close {
+  height: 2.25rem;
+  padding: 0 0.875rem;
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #18181b;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
 }
-.cs-site-header__mobile-only {
-  display: none;
+.cs-site-header__close:hover {
+  border-color: #18181b;
 }
-@media (max-width: 720px) {
+@media (min-width: 640px) {
   .cs-site-header__inner {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .cs-site-header__nav {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: #0a0a0a;
-    border-bottom: 1px solid #222;
-    padding: 0.25rem 1.5rem 0.75rem;
-  }
-  .cs-site-header__nav.is-open {
-    display: block;
-  }
-  .cs-site-header__nav ul {
-    flex-direction: column;
-    gap: 0;
-  }
-  .cs-site-header__nav li {
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-  }
-  .cs-site-header__nav a {
-    display: block;
-    padding: 0.85rem 0;
-    border-bottom: none;
-  }
-  .cs-site-header__mobile-only {
-    display: list-item;
-  }
-  .cs-site-header__logo img {
-    height: 26px;
-  }
-  .cs-site-header__outline {
-    display: none;
-  }
-  .cs-site-header__toggle {
-    display: inline-flex;
+    padding: 0 1.5rem;
   }
 }
 
-/* ── 도구 탭 내비 (codivostudio-web의 ProgramNav.astro와 동일한 값) ────── */
+/* ── 도구 탭 내비 (codivostudio-web ver2의 필터 버튼과 동일한 값) ─────── */
 .cs-program-nav {
   margin: 0 0 1.5rem;
-  border-bottom: 1px solid #e6e6e6;
 }
 .cs-program-nav ul {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem;
   list-style: none;
-  margin: 0;
-  padding: 0.5rem 1.5rem 0;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 0;
+  max-width: 1200px;
   overflow-x: auto;
 }
 .cs-program-link {
   display: inline-flex;
   align-items: center;
-  padding: 0.6rem 0.7rem;
-  font-size: 0.925rem;
+  height: 2.25rem;
+  padding: 0 0.875rem;
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.875rem;
   font-weight: 500;
-  color: #444444;
+  color: #18181b;
   text-decoration: none;
   white-space: nowrap;
-  border-bottom: 2px solid transparent;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
-/* 롤오버하면 활성 탭처럼 주황 글자와 주황 밑줄로 바뀝니다 */
 .cs-program-link:hover {
-  color: #ff4f0a;
-  border-bottom-color: #ff4f0a;
+  background: #f4f4f5;
 }
-.cs-program-link--active {
-  color: #ff4f0a;
-  font-weight: 700;
-  border-bottom-color: #ff4f0a;
+.cs-program-link--active,
+.cs-program-link--active:hover {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+}
+@media (min-width: 640px) {
+  .cs-program-nav ul {
+    padding: 1rem 1.5rem 0;
+  }
 }
 
 html,

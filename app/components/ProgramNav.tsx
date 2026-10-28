@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 
 // basePath(/tools/excel-converter)는 usePathname 값에서 이미 빠져 있다.
 const TABS = [
-  { href: "/tools/all-tools/", label: "전체도구", match: null },
   { href: "/tools/excel-converter/", label: "엑셀변환기", match: "/" },
   { href: "/tools/excel-converter/guide", label: "이용안내", match: "/guide" },
 ];

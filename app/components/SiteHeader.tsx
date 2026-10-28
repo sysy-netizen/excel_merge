@@ -1,59 +1,45 @@
 "use client";
 
-import { useState } from "react";
+// codivostudio-web(ver2) 헤더와 같은 모양. 로고, "전체 프로젝트" 링크, 종료 버튼만 둔다.
+// 이 앱은 vercel.app 주소로도 열릴 수 있어서 링크는 절대 주소로 둔다.
+const SITE = "https://www.codivostudio.com";
 
-// codivostudio-web의 Header.astro와 같은 모양. 이 앱은 vercel.app 주소로도
-// 열릴 수 있어서 링크는 절대 주소로 둔다 (어느 도메인에서 열어도 안 깨짐).
-const SITE = "https://codivostudio.com";
-
-const NAV_ITEMS = [
-  { href: `${SITE}/`, label: "홈" },
-  { href: `${SITE}/tools/`, label: "도구", active: true },
-  { href: `${SITE}/about/`, label: "소개" },
-];
+// 스크립트로 열지 않은 창은 브라우저가 window.close()를 막는다.
+// 잠시 후에도 창이 남아 있으면 홈페이지로 이동한다.
+function closeWindow() {
+  window.close();
+  setTimeout(() => {
+    window.location.href = `${SITE}/`;
+  }, 300);
+}
 
 export default function SiteHeader() {
-  const [open, setOpen] = useState(false);
-
   return (
     <header className="cs-site-header">
       <div className="cs-site-header__inner">
-        <a className="cs-site-header__logo" href={`${SITE}/`}>
+        <a className="cs-site-header__logo" href={`${SITE}/`} aria-label="CODIVO STUDIO 홈">
           <img
-            src="/tools/excel-converter/logo/logo-header.png"
-            alt="Codivo Studio"
-            width={1222}
-            height={200}
+            src="/tools/excel-converter/logo/brand-logo.png"
+            alt=""
+            width={42}
+            height={28}
           />
+          <span className="cs-site-header__brand">
+            <span className="cs-site-header__name">
+              <b>COD</b>
+              <b className="is-vivo">IVO</b> <em>STUDIO</em>
+            </span>
+            <span className="cs-site-header__meaning">
+              code + <i>vivo</i>
+            </span>
+          </span>
         </a>
-        <nav className={`cs-site-header__nav${open ? " is-open" : ""}`}>
-          <ul>
-            {NAV_ITEMS.map((item) => (
-              <li key={item.label}>
-                <a href={item.href} className={item.active ? "active" : undefined}>
-                  {item.label}
-                </a>
-              </li>
-            ))}
-            <li className="cs-site-header__mobile-only">
-              <a href={`${SITE}/#contact`}>문의하기</a>
-            </li>
-          </ul>
-        </nav>
         <div className="cs-site-header__actions">
-          <a className="cs-site-header__outline" href={`${SITE}/#contact`}>
-            문의하기
+          <a className="cs-site-header__link" href={`${SITE}/tools`}>
+            전체 프로젝트
           </a>
-          <button
-            type="button"
-            className="cs-site-header__toggle"
-            aria-label="메뉴 열기"
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+          <button type="button" className="cs-site-header__close" onClick={closeWindow}>
+            종료
           </button>
         </div>
       </div>
