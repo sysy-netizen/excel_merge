@@ -1,4 +1,10 @@
 {
+  "rewrites": [
+    {
+      "source": "/tools/excel-converter/api/:path*",
+      "destination": "/api/:path*"
+    }
+  ],
   "functions": {
     "api/*.py": {
       "maxDuration": 60,
