@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import "./globals.css";
 import SiteHeader from "./components/SiteHeader";
@@ -20,6 +21,7 @@ export default function RootLayout({
         <SiteHeader />
         <ProgramNav />
         {children}
+        <Analytics />
       </body>
     </html>
   );
