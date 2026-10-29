@@ -25,11 +25,11 @@ app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024  # 20MB
 
 
-# 화면은 basePath가 붙은 /tools/excel-converter/api/* 로 요청하고, rewrite 후에도
-# Flask에는 원래 경로가 그대로 전달되므로 두 경로를 모두 받는다.
+# 화면은 basePath가 붙은 /tools/excel-converter/api/* 로 요청하고, vercel.json rewrite 후에도
+# Flask에는 원래 경로가 전달된다. 이 함수는 엔드포인트가 하나뿐이므로 어떤 경로든 받는다.
 @app.route("/api/naver-logen", methods=["POST"])
-@app.route("/tools/excel-converter/api/naver-logen", methods=["POST"])
-def naver_logen():
+@app.route("/<path:_path>", methods=["POST"])
+def naver_logen(_path=None):
     naver_file = request.files.get("naver")
     logen_file = request.files.get("logen")
     # 판매자가 네이버 다운로드 비밀번호를 기본값(1234)이 아닌 다른 값으로
